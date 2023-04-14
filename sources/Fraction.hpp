@@ -72,7 +72,7 @@ namespace ariel
              * @param other The fraction to move.
              * @note This constructor is used to move the fraction to another fraction.
             */
-            Fraction(Fraction&& other): numerator(other.numerator), denominator(other.denominator) {};
+            Fraction(Fraction&& other) noexcept: numerator(other.numerator), denominator(other.denominator) {};
 
             /*
              * @brief A destructor of the Fraction class.
@@ -97,7 +97,7 @@ namespace ariel
              * @return Fraction& The assigned fraction.
              * @note This function is used to move the fraction to another fraction.
             */
-            Fraction& operator=(Fraction&& other);
+            Fraction& operator=(Fraction&& other) noexcept;
 
             /*
              * @brief Prints the fraction to the output stream.
@@ -105,10 +105,7 @@ namespace ariel
              * @return std::ostream& The output stream.
              * @note This function is used to print the fraction to the output stream.
             */
-            std::ostream& operator<<(std::ostream& os) {
-                os << numerator << "/" << denominator;
-                return os;
-            }
+            std::ostream& operator<<(std::ostream& os) const;
 
             /*
              * @brief Reads the fraction from the input stream.
@@ -116,7 +113,7 @@ namespace ariel
              * @return std::istream& The input stream.
              * @note This function is used to read the fraction from the input stream.
             */
-            std::istream& operator>>(std::istream& is);
+            std::istream& operator>>(std::istream& is) const;
 
             /*
              * @brief Adds two fractions.
