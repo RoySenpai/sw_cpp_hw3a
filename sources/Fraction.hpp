@@ -53,6 +53,14 @@ namespace ariel
             Fraction(): numerator(0), denominator(1) {};
 
             /*
+             * @brief Convert constructor from int to Fraction.
+             * @param numerator The numerator of the fraction.
+             * @note The denominator of the fraction is 1.
+             * @note This constructor is used to convert an integer to a fraction.
+            */
+            Fraction(int numerator): numerator(numerator), denominator(1) {};
+
+            /*
              * @brief Construct a new Fraction object
              * @param numerator The numerator of the fraction.
              * @param denominator The denominator of the fraction.
@@ -88,16 +96,22 @@ namespace ariel
              * @brief Assigns a fraction to another fraction.
              * @param other The fraction to assign.
              * @return Fraction& The assigned fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator=(const Fraction& other);
+            Fraction& operator=(const Fraction& other) {
+                return *this;
+            }
 
             /*
              * @brief Assigns a fraction to another fraction.
              * @param other The fraction to assign.
              * @return Fraction& The assigned fraction.
              * @note This function is used to move the fraction to another fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator=(Fraction&& other) noexcept;
+            Fraction& operator=(Fraction&& other) noexcept {
+                return *this;
+            }
 
             /*
              * @brief Prints the fraction to the output stream.
@@ -105,15 +119,20 @@ namespace ariel
              * @return std::ostream& The output stream.
              * @note This function is used to print the fraction to the output stream.
             */
-            std::ostream& operator<<(std::ostream& os) const;
+            std::ostream& operator<<(std::ostream& os) const {
+                return os << numerator << "/" << denominator;
+            }
 
             /*
              * @brief Reads the fraction from the input stream.
              * @param is The input stream.
              * @return std::istream& The input stream.
              * @note This function is used to read the fraction from the input stream.
+             * @TODO Implement this function.
             */
-            std::istream& operator>>(std::istream& is) const;
+            std::istream& operator>>(std::istream& is) const {
+                return is;
+            }
 
             /*
              * @brief Adds two fractions.
@@ -121,7 +140,17 @@ namespace ariel
              * @return Fraction The result of the addition.
             */
             Fraction operator+(const Fraction& other) const {
-                return Fraction((numerator * other.denominator) + (other.numerator * denominator), denominator * other.denominator);
+                return Fraction(((numerator * other.denominator) + (other.numerator * denominator)), (denominator * other.denominator));
+            }
+
+            /*
+             * @brief Adds a fraction and an integer.
+             * @param other The integer to add.
+             * @return Fraction The result of the addition.
+             * @TODO Implement this function.
+            */
+            Fraction operator+(const int& other) {
+                return Fraction(*this);
             }
 
             /*
@@ -130,7 +159,17 @@ namespace ariel
              * @return Fraction The result of the subtraction.
             */
             Fraction operator-(const Fraction& other) const {
-                return Fraction((numerator * other.denominator) - (other.numerator * denominator), denominator * other.denominator);
+                return Fraction(((numerator * other.denominator) - (other.numerator * denominator)), (denominator * other.denominator));
+            }
+
+            /*
+             * @brief Subtracts a fraction and an integer.
+             * @param other The integer to subtract.
+             * @return Fraction The result of the subtraction.
+             * @TODO Implement this function.
+            */
+            Fraction operator-(const int& other) {
+                return Fraction(*this);
             }
 
             /*
@@ -139,7 +178,7 @@ namespace ariel
              * @return Fraction The result of the multiplication.
             */
             Fraction operator*(const Fraction& other) const {
-                return Fraction(numerator * other.numerator, denominator * other.denominator);
+                return Fraction((numerator * other.numerator), (denominator * other.denominator));
             }
 
             /*
@@ -171,53 +210,77 @@ namespace ariel
              * @brief Adds a fraction to the current fraction.
              * @param other The fraction to add.
              * @return Fraction& The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator+=(const Fraction& other);
+            Fraction& operator+=(const Fraction& other) {
+                return *this;
+            }
 
             /*
              * @brief Subtracts a fraction from the current fraction.
              * @param other The fraction to subtract.
              * @return Fraction& The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator-=(const Fraction& other);
+            Fraction& operator-=(const Fraction& other) {
+                return *this;
+            }
 
             /*
              * @brief Multiplies the current fraction by a fraction.
              * @param other The fraction to multiply.
              * @return Fraction& The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator*=(const Fraction& other);
+            Fraction& operator*=(const Fraction& other) {
+                return *this;
+            }
 
             /*
              * @brief Divides the current fraction by a fraction.
              * @param other The fraction to divide.
              * @return Fraction& The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator/=(const Fraction& other);
+            Fraction& operator/=(const Fraction& other) {
+                return *this;
+            }
 
             /*
              * @brief Increments the current fraction by 1 (pre-increment).
              * @return Fraction& The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator++();
+            Fraction& operator++() {
+                return *this;
+            }
 
             /*
              * @brief Decrements the current fraction by 1 (pre-decrement).
              * @return Fraction& The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction& operator--();
+            Fraction& operator--() {
+                return *this;
+            }
 
             /*
              * @brief Increments the current fraction by 1 (post-increment).
              * @return Fraction The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction operator++(int);
+            Fraction operator++(int) {
+                return *this;
+            }
 
             /*
              * @brief Decrements the current fraction by 1 (post-decrement).
              * @return Fraction The current fraction.
+             * @TODO Implement this function.
             */
-            Fraction operator--(int);
+            Fraction operator--(int) {
+                return *this;
+            }
 
 
             /*********************************/
@@ -248,7 +311,17 @@ namespace ariel
              * @return True if the current fraction is greater than the other fraction, false otherwise.
             */
             bool operator>(const Fraction& other) const {
-                return (double)*this > (double)other;
+                return (float)*this > (float)other;
+            }
+
+            /*
+             * @brief Compares a fraction and an integer.
+             * @param other The integer to compare.
+             * @return True if the current fraction is greater than the integer, false otherwise.
+             * @TODO Implement this function.
+            */
+            bool operator>(const int& other) const {
+                return true;
             }
 
             /* 
@@ -257,7 +330,7 @@ namespace ariel
              * @return True if the current fraction is less than the other fraction, false otherwise.
             */
             bool operator<(const Fraction& other) const {
-                return (double)*this < (double)other;
+                return (float)*this < (float)other;
             }
 
             /*
@@ -266,7 +339,7 @@ namespace ariel
              * @return True if the current fraction is greater than or equal to the other fraction, false otherwise.
             */
             bool operator>=(const Fraction& other) const {
-                return (double)*this >= (double)other;
+                return (float)*this >= (float)other;
             }
 
             /*
@@ -275,7 +348,7 @@ namespace ariel
              * @return True if the current fraction is less than or equal to the other fraction, false otherwise.
             */
             bool operator<=(const Fraction& other) const {
-                return (double)*this <= (double)other;
+                return (float)*this <= (float)other;
             }
 
 
@@ -284,19 +357,11 @@ namespace ariel
             /*******************************************/
 
             /*
-             * @brief Converts the fraction to an integer.
-             * @return The integer value of the fraction (rounded down).
+             * @brief Converts the fraction to a float.
+             * @return The float value of the fraction.
             */
-            operator int () const {
-                return (int)((double)numerator / denominator);
-            }
-
-            /*
-             * @brief Converts the fraction to a double.
-             * @return The double value of the fraction.
-            */
-            operator double() const {
-                return (double)numerator / denominator;
+            operator float() const {
+                return (float)numerator / denominator;
             }
 
             /*
