@@ -38,11 +38,11 @@ TEST_CASE("Test 3: Fraction constructor should reduce the fraction")
     Fraction d (-2, -4); // This is a valid fraction (-2/-4) = 1/2
     Fraction e (3, 4); // This is a valid fraction (3/4) = 0.75 (Note: 3/4 can't be reduced)
 
-    CHECK((double)a == 0.5);
-    CHECK((double)b == -0.5);
-    CHECK((double)c == -0.5);
-    CHECK((double)d == 0.5);
-    CHECK((double)e == 0.75);
+    CHECK((float)a == 0.5);
+    CHECK((float)b == -0.5);
+    CHECK((float)c == -0.5);
+    CHECK((float)d == 0.5);
+    CHECK((float)e == 0.75);
 }
 
 TEST_CASE("Test 4: Fraction constructor should reduce the fraction when the numerator is zero")
@@ -50,8 +50,8 @@ TEST_CASE("Test 4: Fraction constructor should reduce the fraction when the nume
     Fraction a (0, 4); // This is a valid fraction (0/4) = 0
     Fraction b (0, -4); // This is a valid fraction (0/-4) = 0
 
-    CHECK((double)a == 0);
-    CHECK((double)b == 0);
+    CHECK((float)a == 0);
+    CHECK((float)b == 0);
 }
 
 TEST_CASE("Test 5: Arithmetics with fractions")
@@ -59,10 +59,10 @@ TEST_CASE("Test 5: Arithmetics with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((double)(a + b) == 0.833333333333333);
-    CHECK((double)(a - b) == 0.166666666666667);
-    CHECK((double)(a * b) == 0.166666666666667);
-    CHECK((double)(a / b) == 1.5);
+    CHECK((float)(a + b) == 0.833333333333333);
+    CHECK((float)(a - b) == 0.166666666666667);
+    CHECK((float)(a * b) == 0.166666666666667);
+    CHECK((float)(a / b) == 1.5);
 }
 
 TEST_CASE("Test 6: Comparison operators with fractions")
@@ -76,4 +76,119 @@ TEST_CASE("Test 6: Comparison operators with fractions")
     CHECK((a <= b) == false);
     CHECK((a == b) == false);
     CHECK((a != b) == true);
+}
+
+TEST_CASE("Test 7: Unary operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (-1, 2);
+    Fraction c (1, -2);
+    Fraction d (-1, -2);
+
+    CHECK((float)(+a) == 0.5);
+    CHECK((float)(-a) == -0.5);
+    CHECK((float)(+b) == -0.5);
+    CHECK((float)(-b) == 0.5);
+    CHECK((float)(+c) == -0.5);
+    CHECK((float)(-c) == 0.5);
+    CHECK((float)(+d) == 0.5);
+    CHECK((float)(-d) == -0.5);
+}
+
+TEST_CASE("Test 8: Compound assignment operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (1, 3);
+
+    a += b;
+    CHECK((float)a == 0.833333333333333);
+
+    a -= b;
+    CHECK((float)a == 0.5);
+
+    a *= b;
+    CHECK((float)a == 0.166666666666667);
+
+    a /= b;
+    CHECK((float)a == 0.5);
+}
+
+TEST_CASE("Test 9: Increment and decrement operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (1, 3);
+
+    CHECK((float)(++a) == 0.75);
+    CHECK((float)(a++) == 0.75);
+    CHECK((float)a == 1.25);
+
+    CHECK((float)(--b) == 0.333333333333333);
+    CHECK((float)(b--) == 0.333333333333333);
+    CHECK((float)b == -0.666666666666667);
+}
+
+TEST_CASE("Test 10: I/O operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (1, 3);
+
+    cout << a << endl;
+    cout << b << endl;
+}
+
+TEST_CASE("Test 11: Type conversion operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (1, 3);
+
+    CHECK((int)a == 0);
+    CHECK((int)b == 0);
+    CHECK((float)a == 0.5);
+    CHECK((float)b == 0.333333333333333);
+}
+
+TEST_CASE("Test 12: Mixed type operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (1, 3);
+
+    CHECK((float)(a + 1) == 1.5);
+    CHECK((float)(1 + a) == 1.5);
+    CHECK((float)(a - 1) == -0.5);
+    CHECK((float)(1 - a) == 0.5);
+    CHECK((float)(a * 2) == 1);
+    CHECK((float)(2 * a) == 1);
+    CHECK((float)(a / 2) == 0.25);
+    CHECK((float)(2 / a) == 4);
+
+    CHECK((a > 1) == false);
+    CHECK((1 > a) == true);
+    CHECK((a < 1) == true);
+    CHECK((1 < a) == false);
+    CHECK((a >= 1) == false);
+    CHECK((1 >= a) == true);
+    CHECK((a <= 1) == true);
+    CHECK((1 <= a) == false);
+    CHECK((a == 1) == false);
+    CHECK((1 == a) == false);
+    CHECK((a != 1) == true);
+    CHECK((1 != a) == true);
+}
+
+TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
+{
+    Fraction a (1, 2);
+    Fraction b (1, 3);
+
+    a += 1;
+    CHECK((float)a == 1.5);
+
+    a -= 1;
+    CHECK((float)a == 0.5);
+
+    a *= 2;
+    CHECK((float)a == 1);
+
+    a /= 2;
+    CHECK((float)a == 0.5);
 }
