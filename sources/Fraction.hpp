@@ -26,7 +26,7 @@ namespace ariel
              * @brief Reduces the fraction to its simplest form.
              * @note This function is private because it is only used internally.
             */
-            void reduce();
+            void __reduce();
 
             /*
              * @brief Calculates the greatest common divisor of two numbers.
@@ -59,6 +59,13 @@ namespace ariel
              * @note This constructor is used to convert an integer to a fraction.
             */
             Fraction(int numerator): numerator(numerator), denominator(1) {};
+
+            /*
+             * @brief Convert constructor from double to Fraction.
+             * @param number The number to convert to a fraction.
+             * @note This constructor is used to convert a double to a fraction.
+            */
+            Fraction(double number);
 
             /*
              * @brief Construct a new Fraction object
@@ -143,14 +150,14 @@ namespace ariel
                 return Fraction(((numerator * other.denominator) + (other.numerator * denominator)), (denominator * other.denominator));
             }
 
+
             /*
-             * @brief Adds a fraction and an integer.
-             * @param other The integer to add.
+             * @brief Adds a fraction to a double.
+             * @param other The double to add.
              * @return Fraction The result of the addition.
-             * @TODO Implement this function.
             */
-            Fraction operator+(const int& other) {
-                return Fraction(*this);
+            Fraction operator+(const double other) const {
+                return *this + Fraction(other);
             }
 
             /*
@@ -162,14 +169,8 @@ namespace ariel
                 return Fraction(((numerator * other.denominator) - (other.numerator * denominator)), (denominator * other.denominator));
             }
 
-            /*
-             * @brief Subtracts a fraction and an integer.
-             * @param other The integer to subtract.
-             * @return Fraction The result of the subtraction.
-             * @TODO Implement this function.
-            */
-            Fraction operator-(const int& other) {
-                return Fraction(*this);
+            Fraction operator-(const int num) const {
+                return Fraction(this->numerator - num * this->denominator, this->denominator);
             }
 
             /*
@@ -311,7 +312,7 @@ namespace ariel
              * @return True if the current fraction is greater than the other fraction, false otherwise.
             */
             bool operator>(const Fraction& other) const {
-                return (float)*this > (float)other;
+                return (double)*this > (double)other;
             }
 
             /*
@@ -324,13 +325,23 @@ namespace ariel
                 return true;
             }
 
+            /*
+             * @brief Compares a fraction and a double.
+             * @param other The double to compare.
+             * @return True if the current fraction is greater than the double, false otherwise.
+             * @TODO Implement this function.
+            */
+            bool operator>(const double num) const {
+                return true;
+            }
+
             /* 
              * @brief Compares two fractions.
              * @param other The fraction to compare.
              * @return True if the current fraction is less than the other fraction, false otherwise.
             */
             bool operator<(const Fraction& other) const {
-                return (float)*this < (float)other;
+                return (double)*this < (double)other;
             }
 
             /*
@@ -339,7 +350,7 @@ namespace ariel
              * @return True if the current fraction is greater than or equal to the other fraction, false otherwise.
             */
             bool operator>=(const Fraction& other) const {
-                return (float)*this >= (float)other;
+                return (double)*this >= (double)other;
             }
 
             /*
@@ -348,7 +359,7 @@ namespace ariel
              * @return True if the current fraction is less than or equal to the other fraction, false otherwise.
             */
             bool operator<=(const Fraction& other) const {
-                return (float)*this <= (float)other;
+                return (double)*this <= (double)other;
             }
 
 
@@ -357,11 +368,11 @@ namespace ariel
             /*******************************************/
 
             /*
-             * @brief Converts the fraction to a float.
+             * @brief Converts the fraction to a double.
              * @return The float value of the fraction.
             */
-            operator float() const {
-                return (float)numerator / denominator;
+            operator double() const {
+                return (double)numerator / denominator;
             }
 
             /*
@@ -372,4 +383,5 @@ namespace ariel
                 return std::to_string(numerator) + "/" + std::to_string(denominator);
             }
     };
+
 }
