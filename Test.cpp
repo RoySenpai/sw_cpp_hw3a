@@ -1,3 +1,19 @@
+/*
+ *  Software Systems CPP Course Assignment 3
+ *  Copyright (C) 2023  Roy Simanovich
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 #include <iostream>
 #include <stdexcept>
 #include "doctest.h"
@@ -38,11 +54,11 @@ TEST_CASE("Test 3: Fraction constructor should reduce the fraction")
     Fraction d (-2, -4); // This is a valid fraction (-2/-4) = 1/2
     Fraction e (3, 4); // This is a valid fraction (3/4) = 0.75 (Note: 3/4 can't be reduced)
 
-    CHECK((float)a == 0.5);
-    CHECK((float)b == -0.5);
-    CHECK((float)c == -0.5);
-    CHECK((float)d == 0.5);
-    CHECK((float)e == 0.75);
+    CHECK(a == 0.5);
+    CHECK(b == -0.5);
+    CHECK(c == -0.5);
+    CHECK(d == 0.5);
+    CHECK(e == 0.75);
 }
 
 TEST_CASE("Test 4: Fraction constructor should reduce the fraction when the numerator is zero")
@@ -50,8 +66,8 @@ TEST_CASE("Test 4: Fraction constructor should reduce the fraction when the nume
     Fraction a (0, 4); // This is a valid fraction (0/4) = 0
     Fraction b (0, -4); // This is a valid fraction (0/-4) = 0
 
-    CHECK((float)a == 0);
-    CHECK((float)b == 0);
+    CHECK(a == 0);
+    CHECK(b == 0);
 }
 
 TEST_CASE("Test 5: Arithmetics with fractions")
@@ -59,10 +75,10 @@ TEST_CASE("Test 5: Arithmetics with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((float)(a + b) == 0.833333333333333);
-    CHECK((float)(a - b) == 0.166666666666667);
-    CHECK((float)(a * b) == 0.166666666666667);
-    CHECK((float)(a / b) == 1.5);
+    CHECK((double)(a + b) == (double) Fraction(5, 6));
+    CHECK((double)(a - b) == (double) Fraction(1, 6));
+    CHECK((double)(a * b) == (double) Fraction(1, 6));
+    CHECK((double)(a / b) == (double) Fraction(3, 2));
 }
 
 TEST_CASE("Test 6: Comparison operators with fractions")
@@ -85,14 +101,14 @@ TEST_CASE("Test 7: Unary operators with fractions")
     Fraction c (1, -2);
     Fraction d (-1, -2);
 
-    CHECK((float)(+a) == 0.5);
-    CHECK((float)(-a) == -0.5);
-    CHECK((float)(+b) == -0.5);
-    CHECK((float)(-b) == 0.5);
-    CHECK((float)(+c) == -0.5);
-    CHECK((float)(-c) == 0.5);
-    CHECK((float)(+d) == 0.5);
-    CHECK((float)(-d) == -0.5);
+    CHECK((double)(+a) == 0.5);
+    CHECK((double)(-a) == -0.5);
+    CHECK((double)(+b) == -0.5);
+    CHECK((double)(-b) == 0.5);
+    CHECK((double)(+c) == -0.5);
+    CHECK((double)(-c) == 0.5);
+    CHECK((double)(+d) == 0.5);
+    CHECK((double)(-d) == -0.5);
 }
 
 TEST_CASE("Test 8: Compound assignment operators with fractions")
@@ -101,16 +117,16 @@ TEST_CASE("Test 8: Compound assignment operators with fractions")
     Fraction b (1, 3);
 
     a += b;
-    CHECK((float)a == 0.833333333333333);
+    CHECK((double)a == (double) Fraction(5, 6));
 
     a -= b;
-    CHECK((float)a == 0.5);
+    CHECK((double)a == (double) Fraction(1, 2));
 
     a *= b;
-    CHECK((float)a == 0.166666666666667);
+    CHECK((double)a == (double) Fraction(1, 6));
 
     a /= b;
-    CHECK((float)a == 0.5);
+    CHECK((double)a == (double) Fraction(1, 2));
 }
 
 TEST_CASE("Test 9: Increment and decrement operators with fractions")
@@ -118,13 +134,13 @@ TEST_CASE("Test 9: Increment and decrement operators with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((float)(++a) == 1.5);
-    CHECK((float)(a++) == 1.5);
-    CHECK((float)a == 2.5);
+    CHECK((double)(++a) == (double) Fraction(3, 2));
+    CHECK((double)(a++) == (double) Fraction(3, 2));
+    CHECK((double)a == (double) Fraction(5, 2));
 
-    CHECK((float)(--b) == -0.666666666666667);
-    CHECK((float)(b--) == -0.666666666666667);
-    CHECK((float)b == -1.66666666666667);
+    CHECK((double)(--b) == (double) Fraction(-2, 3));
+    CHECK((double)(b--) == (double) Fraction(-2, 3));
+    CHECK((double)b == (double) Fraction(-5, 3));
 }
 
 TEST_CASE("Test 10: I/O operators with fractions")
@@ -143,22 +159,22 @@ TEST_CASE("Test 11: Type conversion operators with fractions")
 
     CHECK((int)a == 0);
     CHECK((int)b == 0);
-    CHECK((float)a == 0.5);
-    CHECK((float)b == 0.333333333333333);
+    CHECK((double)a == 0.5);
+    CHECK((double)b == 0.333333333333333);
 }
 
 TEST_CASE("Test 12: Mixed type operators with fractions")
 {
     Fraction a (1, 2);
 
-    CHECK((float)(a + 1) == 1.5);
-    CHECK((float)(1 + a) == 1.5);
-    CHECK((float)(a - 1) == -0.5);
-    CHECK((float)(1 - a) == 0.5);
-    CHECK((float)(a * 2) == 1);
-    CHECK((float)(2 * a) == 1);
-    CHECK((float)(a / 2) == 0.25);
-    CHECK((float)(2 / a) == 4);
+    CHECK((double)(a + 1) == (double) Fraction(3, 2));
+    CHECK((double)(1 + a) == (double) Fraction(3, 2));
+    CHECK((double)(a - 1) == (double) Fraction(-1, 2));
+    CHECK((double)(1 - a) == (double) Fraction(1, 2));
+    CHECK((double)(a * 2) == (double) Fraction(1, 1));
+    CHECK((double)(2 * a) == (double) Fraction(1, 1));
+    CHECK((double)(a / 2) == (double) Fraction(1, 4));
+    CHECK((double)(2 / a) == (double) Fraction(4, 1));
 
     CHECK((a > 1) == false);
     CHECK((1 > a) == true);
@@ -179,15 +195,15 @@ TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
     Fraction a (1, 2);
 
     a += 1;
-    CHECK((float)a == 1.5);
+    CHECK((double)a == (double) Fraction(3, 2));
 
     a -= 1;
-    CHECK((float)a == 0.5);
+    CHECK((double)a == (double) Fraction(1, 2));
 
     a *= 2;
-    CHECK((float)a == 1);
+    CHECK((double)a == (double) Fraction(1, 1));
 
     a /= 2;
-    CHECK((float)a == 0.5);
+    CHECK((double)a == (double) Fraction(1, 2));
 }
 
