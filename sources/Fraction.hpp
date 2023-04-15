@@ -73,8 +73,10 @@ namespace ariel
              * @param denominator The denominator of the fraction.
              * @throw invalid_argument if the denominator is 0.
              * @note The fraction will be reduced to its simplest form.
+             * @note This constructor is explicit since we don't want to convert a double to a fraction automatically,
+             *      but we want to do it explicitly by using the convert constructor from double to Fraction.
             */
-            Fraction(int numerator, int denominator);
+            explicit Fraction(int numerator, int denominator);
 
             /*
              * @brief Copy constructor of the Fraction class.
@@ -369,7 +371,7 @@ namespace ariel
 
             /*
              * @brief Converts the fraction to a double.
-             * @return The float value of the fraction.
+             * @return The double value of the fraction.
             */
             operator double() const {
                 return (double)numerator / denominator;
