@@ -118,13 +118,13 @@ TEST_CASE("Test 9: Increment and decrement operators with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((float)(++a) == 0.75);
-    CHECK((float)(a++) == 0.75);
-    CHECK((float)a == 1.25);
+    CHECK((float)(++a) == 1.5);
+    CHECK((float)(a++) == 1.5);
+    CHECK((float)a == 2.5);
 
-    CHECK((float)(--b) == 0.333333333333333);
-    CHECK((float)(b--) == 0.333333333333333);
-    CHECK((float)b == -0.666666666666667);
+    CHECK((float)(--b) == -0.666666666666667);
+    CHECK((float)(b--) == -0.666666666666667);
+    CHECK((float)b == -1.66666666666667);
 }
 
 TEST_CASE("Test 10: I/O operators with fractions")
@@ -132,8 +132,8 @@ TEST_CASE("Test 10: I/O operators with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    cout << a << endl;
-    cout << b << endl;
+    CHECK_NOTHROW(cout << a << endl);
+    CHECK_NOTHROW(cout << b << endl);
 }
 
 TEST_CASE("Test 11: Type conversion operators with fractions")
@@ -150,7 +150,6 @@ TEST_CASE("Test 11: Type conversion operators with fractions")
 TEST_CASE("Test 12: Mixed type operators with fractions")
 {
     Fraction a (1, 2);
-    Fraction b (1, 3);
 
     CHECK((float)(a + 1) == 1.5);
     CHECK((float)(1 + a) == 1.5);
@@ -178,7 +177,6 @@ TEST_CASE("Test 12: Mixed type operators with fractions")
 TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
 {
     Fraction a (1, 2);
-    Fraction b (1, 3);
 
     a += 1;
     CHECK((float)a == 1.5);
@@ -192,3 +190,4 @@ TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
     a /= 2;
     CHECK((float)a == 0.5);
 }
+
