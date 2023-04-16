@@ -17,20 +17,17 @@
 
 #include "Fraction.hpp"
 
+using namespace std;
+
 namespace ariel
 {
-    Fraction::Fraction(int numerator, int denominator): numerator(numerator), denominator(denominator) {
-        if (denominator == 0)
-            throw std::invalid_argument("Denominator can't be zero");
-
-        if (denominator < 0)
-        {
-            this->numerator *= -1;
-            this->denominator *= -1;
-        }
-
-        __reduce();
+    void Fraction::__reduce() {
+        int gcd = __gcd(_numerator, _denominator);
+        _numerator /= gcd;
+        _denominator /= gcd;
     }
+
+    Fraction::Fraction(): _numerator(0), _denominator(1) {}
 
     Fraction::Fraction(double number) {
         int power = 1;
@@ -40,15 +37,347 @@ namespace ariel
             power *= 10;
         }
 
-        this->numerator = number;
-        this->denominator = power;
+        _numerator = number;
+        _denominator = power;
 
         __reduce();
     }
 
-    void Fraction::__reduce() {
-        int gcd = __gcd(this->numerator, this->denominator);
-        this->numerator /= gcd;
-        this->denominator /= gcd;
+    Fraction::Fraction(int numerator, int denominator): _numerator(numerator), _denominator(denominator) {
+        if (denominator == 0)
+            throw std::invalid_argument("Denominator can't be zero");
+
+        if (denominator < 0)
+        {
+            _numerator *= -1;
+            _denominator *= -1;
+        }
+
+        __reduce();
+    }
+
+    Fraction::Fraction(const Fraction& other): _numerator(other._numerator), _denominator(other._denominator) {}
+
+    Fraction::Fraction(Fraction&& other) noexcept: _numerator(other._numerator), _denominator(other._denominator) {}
+
+    Fraction& Fraction::operator=(const Fraction& other) {
+        if (this == &other)
+            return *this;
+        
+        this->_numerator = other._numerator;
+        this->_denominator = other._denominator;
+        return *this;
+    }
+
+    Fraction& Fraction::operator=(Fraction&& other) noexcept {
+        if (this == &other)
+            return *this;
+
+        this->_numerator = other._numerator;
+        this->_denominator = other._denominator;
+        return *this;
+    }
+
+
+    // Stream operators (IO friend functions)
+
+    ostream& operator<<(ostream& os, const Fraction& fraction) {
+        os << fraction._numerator << "/" << fraction._denominator;
+        return os;
+    }
+
+    istream& operator>>(istream& is, Fraction& fraction) {
+        int numerator, denominator;
+        char slash;
+
+        is >> numerator >> slash >> denominator;
+
+        if (slash != '/')
+            throw invalid_argument("Invalid input");
+
+        fraction = Fraction(numerator, denominator);
+
+        return is;
+    }
+
+
+    // Operators with fractions
+
+    const Fraction Fraction::operator+(const Fraction& other) const {
+        int numerator = (_numerator * other._denominator) + (other._numerator * _denominator);
+        int denominator = (_denominator * other._denominator);
+
+        int gcd = __gcd(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+
+        return Fraction(numerator, denominator);
+    }
+
+    const Fraction Fraction::operator-(const Fraction& other) const {
+        int numerator = (_numerator * other._denominator) - (other._numerator * _denominator);
+        int denominator = (_denominator * other._denominator);
+
+        int gcd = __gcd(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+
+        return Fraction(numerator, denominator);
+    }
+
+    const Fraction Fraction::operator*(const Fraction& other) const {
+        int numerator = (_numerator * other._numerator);
+        int denominator = (_denominator * other._denominator);
+
+        int gcd = __gcd(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+
+        return Fraction(numerator, denominator);
+    }
+
+    const Fraction Fraction::operator/(const Fraction& other) const {
+        int numerator = (_numerator * other._denominator);
+        int denominator = (_denominator * other._numerator);
+
+        int gcd = __gcd(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+
+        return Fraction(numerator, denominator);
+    }
+
+    const Fraction Fraction::operator+() const {
+        return Fraction(_numerator, _denominator);
+    }
+
+    const Fraction Fraction::operator-() const {
+        return Fraction(-_numerator, _denominator);
+    }
+
+    Fraction& operator+=(Fraction& fraction, const Fraction& other) {
+        fraction._numerator = (fraction._numerator * other._denominator) + (other._numerator * fraction._denominator);
+        fraction._denominator *= other._denominator;
+
+        fraction.__reduce();
+
+        return fraction;
+    }
+
+    Fraction& operator-=(Fraction& fraction, const Fraction& other) {
+        fraction._numerator = (fraction._numerator * other._denominator) - (other._numerator * fraction._denominator);
+        fraction._denominator *= other._denominator;
+
+        fraction.__reduce();
+
+        return fraction;
+    }
+
+    Fraction& operator*=(Fraction& fraction, const Fraction& other) {
+        fraction._numerator *= other._numerator;
+        fraction._denominator *= other._denominator;
+
+        fraction.__reduce();
+
+        return fraction;
+    }
+
+    Fraction& operator/=(Fraction& fraction, const Fraction& other) {
+        fraction._numerator *= other._denominator;
+        fraction._denominator *= other._numerator;
+
+        fraction.__reduce();
+
+        return fraction;
+    }
+
+    Fraction& Fraction::operator++() {
+        _numerator += _denominator;
+
+        __reduce();
+
+        return *this;
+    }
+
+    Fraction Fraction::operator++(int) {
+        Fraction temp = *this;
+        ++(*this);
+        return temp;
+    }
+
+    Fraction& Fraction::operator--() {
+        _numerator -= _denominator;
+
+        __reduce();
+
+        return *this;
+    }
+
+    Fraction Fraction::operator--(int) {
+        Fraction temp = *this;
+        --(*this);
+        return temp;
+    }
+
+    bool Fraction::operator==(const Fraction& other) const {
+        return (_numerator == other._numerator && _denominator == other._denominator);
+    }
+
+    bool Fraction::operator!=(const Fraction& other) const {
+        return !(*this == other);
+    }
+
+    bool Fraction::operator<(const Fraction& other) const {
+        return (_numerator * other._denominator) < (other._numerator * _denominator);
+    }
+
+    bool Fraction::operator>(const Fraction& other) const {
+        return (_numerator * other._denominator) > (other._numerator * _denominator);
+    }
+
+    bool Fraction::operator<=(const Fraction& other) const {
+        return !(*this > other);
+    }
+
+    bool Fraction::operator>=(const Fraction& other) const {
+        return !(*this < other);
+    }
+
+
+    // Operators with doubles
+
+    const Fraction Fraction::operator+(const double& number) const {
+        return *this + Fraction(number);
+    }
+    
+    const Fraction operator+(const double& num, const Fraction& other) {
+        return Fraction(num) + other;
+    }
+
+    const Fraction Fraction::operator-(const double& number) const {
+        return *this - Fraction(number);
+    }
+
+    const Fraction operator-(const double& num, const Fraction& other) {
+        return Fraction(num) - other;
+    }
+
+    const Fraction Fraction::operator*(const double& number) const {
+        return *this * Fraction(number);
+    }
+
+    const Fraction operator*(const double& num, const Fraction& other) {
+        return Fraction(num) * other;
+    }
+
+    const Fraction Fraction::operator/(const double& number) const {
+        return *this / Fraction(number);
+    }
+
+    const Fraction operator/(const double& num, const Fraction& other) {
+        return Fraction(num) / other;
+    }
+
+    Fraction& operator+=(Fraction& fraction, const double& number) {
+        Fraction temp = fraction + Fraction(number);
+        
+        fraction._numerator = temp._numerator;
+        fraction._denominator = temp._denominator;
+
+        fraction.__reduce();
+
+        return fraction;
+    }
+
+    Fraction& operator-=(Fraction& fraction, const double& number) {
+        Fraction temp = fraction - Fraction(number);
+        
+        fraction._numerator = temp._numerator;
+        fraction._denominator = temp._denominator;
+
+        fraction.__reduce();
+
+        return fraction;
+    }
+
+    Fraction& operator*=(Fraction& fraction, const double& number) {
+        Fraction temp = fraction * Fraction(number);
+        
+        fraction._numerator = temp._numerator;
+        fraction._denominator = temp._denominator;
+
+        fraction.__reduce();
+        
+        return fraction;
+    }
+
+    Fraction& operator/=(Fraction& fraction, const double& number) {
+        Fraction temp = fraction / Fraction(number);
+        
+        fraction._numerator = temp._numerator;
+        fraction._denominator = temp._denominator;
+
+        fraction.__reduce();
+        
+        return fraction;
+    }
+
+    bool Fraction::operator==(const double& number) const {
+        return *this == Fraction(number);
+    }
+
+    bool operator==(const double& num, const Fraction& other) {
+        return Fraction(num) == other;
+    }
+
+    bool Fraction::operator!=(const double& number) const {
+        return !(*this == Fraction(number));
+    }
+
+    bool operator!=(const double& num, const Fraction& other) {
+        return !(Fraction(num) == other);
+    }
+
+    bool Fraction::operator<(const double& number) const {
+        return *this < Fraction(number);
+    }
+
+    bool operator<(const double& num, const Fraction& other) {
+        return Fraction(num) < other;
+    }
+
+    bool Fraction::operator>(const double& number) const {
+        return *this > Fraction(number);
+    }
+
+    bool operator>(const double& num, const Fraction& other) {
+        return Fraction(num) > other;
+    }
+
+    bool Fraction::operator<=(const double& number) const {
+        return !(*this > Fraction(number));
+    }
+
+    bool operator<=(const double& num, const Fraction& other) {
+        return !(Fraction(num) > other);
+    }
+
+    bool Fraction::operator>=(const double& number) const {
+        return !(*this < Fraction(number));
+    }
+
+    bool operator>=(const double& num, const Fraction& other) {
+        return !(Fraction(num) < other);
+    }
+
+
+    // Casting operators
+
+    Fraction::operator double() const {
+        return static_cast<double>(_numerator) / static_cast<double>(_denominator);
+    }
+
+    Fraction::operator std::string() const {
+        return to_string(_numerator) + "/" + to_string(_denominator);
     }
 }

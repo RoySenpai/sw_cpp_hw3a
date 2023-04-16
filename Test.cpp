@@ -54,11 +54,11 @@ TEST_CASE("Test 3: Fraction constructor should reduce the fraction")
     Fraction d (-2, -4); // This is a valid fraction (-2/-4) = 1/2
     Fraction e (3, 4); // This is a valid fraction (3/4) = 0.75 (Note: 3/4 can't be reduced)
 
-    CHECK(a == 0.5);
-    CHECK(b == -0.5);
-    CHECK(c == -0.5);
-    CHECK(d == 0.5);
-    CHECK(e == 0.75);
+    CHECK(a == Fraction(1, 2));
+    CHECK(b == Fraction(-1, 2));
+    CHECK(c == Fraction(-1, 2));
+    CHECK(d == Fraction(1, 2));
+    CHECK(e == Fraction(3, 4));
 }
 
 TEST_CASE("Test 4: Fraction constructor should reduce the fraction when the numerator is zero")
@@ -75,10 +75,10 @@ TEST_CASE("Test 5: Arithmetics with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((double)(a + b) == (double) Fraction(5, 6));
-    CHECK((double)(a - b) == (double) Fraction(1, 6));
-    CHECK((double)(a * b) == (double) Fraction(1, 6));
-    CHECK((double)(a / b) == (double) Fraction(3, 2));
+    CHECK(a + b == Fraction(5, 6));
+    CHECK(a - b == Fraction(1, 6));
+    CHECK(a * b == Fraction(1, 6));
+    CHECK(a / b == Fraction(3, 2));
 }
 
 TEST_CASE("Test 6: Comparison operators with fractions")
@@ -101,14 +101,14 @@ TEST_CASE("Test 7: Unary operators with fractions")
     Fraction c (1, -2);
     Fraction d (-1, -2);
 
-    CHECK((double)(+a) == 0.5);
-    CHECK((double)(-a) == -0.5);
-    CHECK((double)(+b) == -0.5);
-    CHECK((double)(-b) == 0.5);
-    CHECK((double)(+c) == -0.5);
-    CHECK((double)(-c) == 0.5);
-    CHECK((double)(+d) == 0.5);
-    CHECK((double)(-d) == -0.5);
+    CHECK(+a == Fraction(1, 2));
+    CHECK(-a == Fraction(-1, 2));
+    CHECK(+b == Fraction(-1, 2));
+    CHECK(-b == Fraction(1, 2));
+    CHECK(+c == Fraction(-1, 2));
+    CHECK(-c == Fraction(1, 2));
+    CHECK(+d == Fraction(1, 2));
+    CHECK(-d == Fraction(-1, 2));
 }
 
 TEST_CASE("Test 8: Compound assignment operators with fractions")
@@ -117,16 +117,16 @@ TEST_CASE("Test 8: Compound assignment operators with fractions")
     Fraction b (1, 3);
 
     a += b;
-    CHECK((double)a == (double) Fraction(5, 6));
+    CHECK(a == Fraction(5, 6));
 
     a -= b;
-    CHECK((double)a == (double) Fraction(1, 2));
+    CHECK(a == Fraction(1, 2));
 
     a *= b;
-    CHECK((double)a == (double) Fraction(1, 6));
+    CHECK(a == Fraction(1, 6));
 
     a /= b;
-    CHECK((double)a == (double) Fraction(1, 2));
+    CHECK(a == Fraction(1, 2));
 }
 
 TEST_CASE("Test 9: Increment and decrement operators with fractions")
@@ -134,13 +134,13 @@ TEST_CASE("Test 9: Increment and decrement operators with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((double)(++a) == (double) Fraction(3, 2));
-    CHECK((double)(a++) == (double) Fraction(3, 2));
-    CHECK((double)a == (double) Fraction(5, 2));
+    CHECK(++a == Fraction(3, 2));
+    CHECK(a++ == Fraction(3, 2));
+    CHECK(a == Fraction(5, 2));
 
-    CHECK((double)(--b) == (double) Fraction(-2, 3));
-    CHECK((double)(b--) == (double) Fraction(-2, 3));
-    CHECK((double)b == (double) Fraction(-5, 3));
+    CHECK(--b == Fraction(-2, 3));
+    CHECK(b-- == Fraction(-2, 3));
+    CHECK(b == Fraction(-5, 3));
 }
 
 TEST_CASE("Test 10: I/O operators with fractions")
@@ -157,24 +157,24 @@ TEST_CASE("Test 11: Type conversion operators with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
-    CHECK((int)a == 0);
-    CHECK((int)b == 0);
-    CHECK((double)a == 0.5);
-    CHECK((double)b == 0.333333333333333);
+    CHECK(a == 0);
+    CHECK(b == 0);
+    CHECK(a == 0.5);
+    CHECK(b == 0.333333333333333);
 }
 
 TEST_CASE("Test 12: Mixed type operators with fractions")
 {
     Fraction a (1, 2);
 
-    CHECK((double)(a + 1) == (double) Fraction(3, 2));
-    CHECK((double)(1 + a) == (double) Fraction(3, 2));
-    CHECK((double)(a - 1) == (double) Fraction(-1, 2));
-    CHECK((double)(1 - a) == (double) Fraction(1, 2));
-    CHECK((double)(a * 2) == (double) Fraction(1, 1));
-    CHECK((double)(2 * a) == (double) Fraction(1, 1));
-    CHECK((double)(a / 2) == (double) Fraction(1, 4));
-    CHECK((double)(2 / a) == (double) Fraction(4, 1));
+    CHECK((a + 1) == Fraction(3, 2));
+    CHECK((1 + a) == Fraction(3, 2));
+    CHECK((a - 1) == Fraction(-1, 2));
+    CHECK((1 - a) == Fraction(1, 2));
+    CHECK((a * 2) == Fraction(1, 1));
+    CHECK((2 * a) == Fraction(1, 1));
+    CHECK((a / 2) == Fraction(1, 4));
+    CHECK((2 / a) == Fraction(4, 1));
 
     CHECK((a > 1) == false);
     CHECK((1 > a) == true);
@@ -195,15 +195,15 @@ TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
     Fraction a (1, 2);
 
     a += 1;
-    CHECK((double)a == (double) Fraction(3, 2));
+    CHECK(a == Fraction(3, 2));
 
     a -= 1;
-    CHECK((double)a == (double) Fraction(1, 2));
+    CHECK(a == Fraction(1, 2));
 
     a *= 2;
-    CHECK((double)a == (double) Fraction(1, 1));
+    CHECK(a == Fraction(1, 1));
 
     a /= 2;
-    CHECK((double)a == (double) Fraction(1, 2));
+    CHECK(a == Fraction(1, 2));
 }
 
