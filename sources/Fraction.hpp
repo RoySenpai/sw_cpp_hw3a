@@ -43,7 +43,24 @@ namespace ariel
              * @brief Reduces the fraction to its simplest form.
              * @note This function is private because it is only used internally.
             */
-            void __reduce();
+            void __reduce() {
+                int gcd = __gcd(abs(_numerator), abs(_denominator));
+                _numerator /= gcd;
+                _denominator /= gcd;
+            }
+
+            /*
+             * @brief Reduces the fraction to its simplest form.
+             * @param numerator The numerator of the fraction.
+             * @param denominator The denominator of the fraction.
+             * @note This function is private because it is only used internally.
+             * @note This function is static because it is only used internally and doesn't require an instance of the class.
+            */
+            static void __reduce(int& numerator, int& denominator) {
+                int gcd = __gcd(abs(numerator), abs(denominator));
+                numerator /= gcd;
+                denominator /= gcd;
+            }
 
             /*
              * @brief Calculates the greatest common divisor of two numbers.
@@ -51,7 +68,6 @@ namespace ariel
              * @param b The second number.
              * @return int The greatest common divisor of the two numbers.
              * @note This function is used to reduce the fraction to its simplest form.
-             * @note This function is private because it is only used internally.
              * @note This function is static because it is only used internally and doesn't require an instance of the class.
             */
             static int __gcd(int a, int b) {
@@ -70,11 +86,11 @@ namespace ariel
             Fraction();
 
             /*
-             * @brief Convert constructor from double to Fraction.
+             * @brief Convert constructor from float to Fraction.
              * @param number The number to convert to a fraction.
-             * @note This constructor is used to convert a double to a fraction.
+             * @note This constructor is used to convert a float to a fraction.
             */
-            Fraction(double number);
+            Fraction(float number);
 
             /*
              * @brief Construct a new Fraction object
@@ -158,19 +174,19 @@ namespace ariel
             const Fraction operator+(const Fraction& other) const;
 
             /*
-             * @brief Adds a fraction to a double.
-             * @param num The double to add.
+             * @brief Adds a fraction to a float.
+             * @param num The float to add.
              * @return  The result of the addition.
             */
-            const Fraction operator+(const double& num) const;
+            const Fraction operator+(const float& num) const;
 
             /*
-             * @brief Adds a fraction to a double.
-             * @param num The double to add.
+             * @brief Adds a fraction to a float.
+             * @param num The float to add.
              * @param other The fraction to add.
              * @return The result of the addition.
             */
-            friend const Fraction operator+(const double& num, const Fraction& other);
+            friend const Fraction operator+(const float& num, const Fraction& other);
 
             /*
              * @brief Subtracts two fractions.
@@ -180,19 +196,19 @@ namespace ariel
             const Fraction operator-(const Fraction& other) const;
 
             /*
-             * @brief Subtracts a fraction from a double.
-             * @param num The double to subtract.
+             * @brief Subtracts a fraction from a float.
+             * @param num The float to subtract.
              * @return The result of the subtraction.
             */
-            const Fraction operator-(const double& num) const;
+            const Fraction operator-(const float& num) const;
 
             /*
-             * @brief Subtracts a fraction from a double.
-             * @param num The double to subtract.
+             * @brief Subtracts a fraction from a float.
+             * @param num The float to subtract.
              * @param other The fraction to subtract.
              * @return The result of the subtraction.
             */
-            friend const Fraction operator-(const double& num, const Fraction& other);
+            friend const Fraction operator-(const float& num, const Fraction& other);
 
             /*
              * @brief Multiplies two fractions.
@@ -202,19 +218,19 @@ namespace ariel
             const Fraction operator*(const Fraction& other) const;
 
             /*
-             * @brief Multiplies a fraction by a double.
-             * @param num The double to multiply.
+             * @brief Multiplies a fraction by a float.
+             * @param num The float to multiply.
              * @return The result of the multiplication.
             */
-            const Fraction operator*(const double& num) const;
+            const Fraction operator*(const float& num) const;
 
             /*
-             * @brief Multiplies a fraction by a double.
-             * @param num The double to multiply.
+             * @brief Multiplies a fraction by a float.
+             * @param num The float to multiply.
              * @param other The fraction to multiply.
              * @return The result of the multiplication.
             */
-            friend const Fraction operator*(const double& num, const Fraction& other);
+            friend const Fraction operator*(const float& num, const Fraction& other);
 
             /*
              * @brief Divides two fractions.
@@ -224,19 +240,19 @@ namespace ariel
             const Fraction operator/(const Fraction& other) const;
 
             /*
-             * @brief Divides a fraction by a double.
-             * @param num The double to divide.
+             * @brief Divides a fraction by a float.
+             * @param num The float to divide.
              * @return The result of the division.
             */
-            const Fraction operator/(const double& num) const;
+            const Fraction operator/(const float& num) const;
 
             /*
-             * @brief Divides a fraction by a double.
-             * @param num The double to divide.
+             * @brief Divides a fraction by a float.
+             * @param num The float to divide.
              * @param other The fraction to divide.
              * @return The result of the division.
             */
-            friend const Fraction operator/(const double& num, const Fraction& other);
+            friend const Fraction operator/(const float& num, const Fraction& other);
 
             /*
              * @brief Returns the fraction.
@@ -264,12 +280,12 @@ namespace ariel
             friend Fraction& operator+=(Fraction& fraction, const Fraction& other);
 
             /*
-             * @brief Adds a double to the current fraction.
+             * @brief Adds a float to the current fraction.
              * @param fraction The current fraction.
-             * @param num The double to add.
+             * @param num The float to add.
              * @return The current fraction.
             */
-            friend Fraction& operator+=(Fraction& fraction, const double& num);
+            friend Fraction& operator+=(Fraction& fraction, const float& num);
 
             /*
              * @brief Subtracts a fraction from the current fraction.
@@ -280,12 +296,12 @@ namespace ariel
             friend Fraction& operator-=(Fraction& fraction, const Fraction& other);
 
             /* 
-             * @brief Adds a double to the current fraction.
+             * @brief Adds a float to the current fraction.
              * @param fraction The current fraction.
-             * @param num The double to add.
+             * @param num The float to add.
              * @return The current fraction.
             */
-            friend Fraction& operator-=(Fraction& fraction, const double& num);
+            friend Fraction& operator-=(Fraction& fraction, const float& num);
 
             /*
              * @brief Multiplies the current fraction by a fraction.
@@ -296,12 +312,12 @@ namespace ariel
             friend Fraction& operator*=(Fraction& fraction, const Fraction& other);
 
             /*
-             * @brief Multiplies the current fraction by a double.
+             * @brief Multiplies the current fraction by a float.
              * @param fraction The current fraction.
-             * @param num The double to multiply.
+             * @param num The float to multiply.
              * @return The current fraction.
             */
-            friend Fraction& operator*=(Fraction& fraction, const double& num);
+            friend Fraction& operator*=(Fraction& fraction, const float& num);
 
             /*
              * @brief Divides the current fraction by a fraction.
@@ -312,12 +328,12 @@ namespace ariel
             friend Fraction& operator/=(Fraction& fraction, const Fraction& other);
 
             /*
-             * @brief Divides the current fraction by a double.
+             * @brief Divides the current fraction by a float.
              * @param fraction The current fraction.
-             * @param num The double to divide.
+             * @param num The float to divide.
              * @return The current fraction.
             */
-            friend Fraction& operator/=(Fraction& fraction, const double& num);
+            friend Fraction& operator/=(Fraction& fraction, const float& num);
 
             /*
              * @brief Increments the current fraction by 1 (pre-increment).
@@ -356,19 +372,19 @@ namespace ariel
             bool operator==(const Fraction& other) const;
 
             /*
-             * @brief Compares a fraction and an double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and an float.
+             * @param other The float to compare.
              * @return True if the fractions are equal, false otherwise.
             */
-            bool operator==(const double& other) const;
+            bool operator==(const float& other) const;
 
             /*
-             * @brief Compares a fraction and an double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and an float.
+             * @param other The float to compare.
              * @param num The fraction to compare.
              * @return True if the fractions are equal, false otherwise.
             */
-            friend bool operator==(const double& num, const Fraction& other);
+            friend bool operator==(const float& num, const Fraction& other);
 
             /*
              * @brief Compares two fractions.
@@ -378,19 +394,19 @@ namespace ariel
             bool operator!=(const Fraction& other) const;
 
             /*
-             * @brief Compares a fraction and an double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and an float.
+             * @param other The float to compare.
              * @return True if the fractions are not equal, false otherwise.
             */
-            bool operator!=(const double& other) const;
+            bool operator!=(const float& other) const;
 
             /*
-             * @brief Compares a fraction and an double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and an float.
+             * @param other The float to compare.
              * @param num The fraction to compare.
              * @return True if the fractions are not equal, false otherwise.
             */
-            friend bool operator!=(const double& num, const Fraction& other);
+            friend bool operator!=(const float& num, const Fraction& other);
 
             /*
              * @brief Compares two fractions.
@@ -400,19 +416,19 @@ namespace ariel
             bool operator>(const Fraction& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
-             * @return True if the current fraction is greater than the double, false otherwise.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
+             * @return True if the current fraction is greater than the float, false otherwise.
             */
-            bool operator>(const double& other) const;
+            bool operator>(const float& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
              * @param num The fraction to compare.
-             * @return True if the current fraction is greater than the double, false otherwise.
+             * @return True if the current fraction is greater than the float, false otherwise.
             */
-            friend bool operator>(const double& num, const Fraction& other);
+            friend bool operator>(const float& num, const Fraction& other);
 
             /* 
              * @brief Compares two fractions.
@@ -422,19 +438,19 @@ namespace ariel
             bool operator<(const Fraction& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
-             * @return True if the current fraction is less than the double, false otherwise.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
+             * @return True if the current fraction is less than the float, false otherwise.
             */
-            bool operator<(const double& other) const;
+            bool operator<(const float& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
              * @param num The fraction to compare.
-             * @return True if the current fraction is less than the double, false otherwise.
+             * @return True if the current fraction is less than the float, false otherwise.
             */
-            friend bool operator<(const double& num, const Fraction& other);
+            friend bool operator<(const float& num, const Fraction& other);
 
             /*
              * @brief Compares two fractions.
@@ -444,19 +460,19 @@ namespace ariel
             bool operator>=(const Fraction& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
-             * @return True if the current fraction is greater than or equal to the double, false otherwise.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
+             * @return True if the current fraction is greater than or equal to the float, false otherwise.
             */
-            bool operator>=(const double& other) const;
+            bool operator>=(const float& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
              * @param num The fraction to compare.
-             * @return True if the current fraction is greater than or equal to the double, false otherwise.
+             * @return True if the current fraction is greater than or equal to the float, false otherwise.
             */
-            friend bool operator>=(const double& num, const Fraction& other);
+            friend bool operator>=(const float& num, const Fraction& other);
 
             /*
              * @brief Compares two fractions.
@@ -466,70 +482,19 @@ namespace ariel
             bool operator<=(const Fraction& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
-             * @return True if the current fraction is less than or equal to the double, false otherwise.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
+             * @return True if the current fraction is less than or equal to the float, false otherwise.
             */
-            bool operator<=(const double& other) const;
+            bool operator<=(const float& other) const;
 
             /*
-             * @brief Compares a fraction and a double.
-             * @param other The double to compare.
+             * @brief Compares a fraction and a float.
+             * @param other The float to compare.
              * @param num The fraction to compare.
-             * @return True if the current fraction is less than or equal to the double, false otherwise.
+             * @return True if the current fraction is less than or equal to the float, false otherwise.
             */
-            friend bool operator<=(const double& num, const Fraction& other);
-
-
-            /************************************/
-            /* Operator overload zone - Casting */
-            /************************************/
-
-            /*
-             * @brief Converts the fraction to a double.
-             * @return The double value of the fraction.
-            */
-            operator double() const;
-
-            /*
-             * @brief Converts the fraction to a string.
-             * @return The string value of the fraction.
-            */
-            operator std::string() const;
-
-
-            /*********************************************/
-            /* Stupid operators overload zone (int only) */
-            /*********************************************/
-
-            friend Fraction operator+=(Fraction& num, const int& other) { return num += Fraction(other); }
-            friend Fraction operator-=(Fraction& num, const int& other) { return num -= Fraction(other); }
-            friend Fraction operator*=(Fraction& num, const int& other) { return num *= Fraction(other); }
-            friend Fraction operator/=(Fraction& num, const int& other) { return num /= Fraction(other); }
-
-            Fraction operator+(const int& num) const { return *this + Fraction(num); }
-            Fraction operator-(const int& num) const { return *this - Fraction(num); }
-            Fraction operator*(const int& num) const { return *this * Fraction(num); }
-            Fraction operator/(const int& num) const { return *this / Fraction(num); }
-
-            friend Fraction operator+(const int& num, const Fraction& other) { return Fraction(num) + other; }
-            friend Fraction operator-(const int& num, const Fraction& other) { return Fraction(num) - other; }
-            friend Fraction operator*(const int& num, const Fraction& other) { return Fraction(num) * other; }
-            friend Fraction operator/(const int& num, const Fraction& other) { return Fraction(num) / other; }
-
-            bool operator==(const int& num) const { return *this == Fraction(num); }
-            bool operator!=(const int& num) const { return *this != Fraction(num); }
-            bool operator>(const int& num) const { return *this > Fraction(num); }
-            bool operator<(const int& num) const { return *this < Fraction(num); }
-            bool operator>=(const int& num) const { return *this >= Fraction(num); }
-            bool operator<=(const int& num) const { return *this <= Fraction(num); }
-
-            friend bool operator==(const int& num, const Fraction& other) { return Fraction(num) == other; }
-            friend bool operator!=(const int& num, const Fraction& other) { return Fraction(num) != other; }
-            friend bool operator>(const int& num, const Fraction& other) { return Fraction(num) > other; }
-            friend bool operator<(const int& num, const Fraction& other) { return Fraction(num) < other; }
-            friend bool operator>=(const int& num, const Fraction& other) { return Fraction(num) >= other; }
-            friend bool operator<=(const int& num, const Fraction& other) { return Fraction(num) <= other; }
+            friend bool operator<=(const float& num, const Fraction& other);
     };
 
 }

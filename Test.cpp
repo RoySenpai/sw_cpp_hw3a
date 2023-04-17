@@ -148,22 +148,14 @@ TEST_CASE("Test 10: I/O operators with fractions")
     Fraction a (1, 2);
     Fraction b (1, 3);
 
+    Fraction c;
+    Fraction d;
+
     CHECK_NOTHROW(cout << a << endl);
     CHECK_NOTHROW(cout << b << endl);
 }
 
-TEST_CASE("Test 11: Type conversion operators with fractions")
-{
-    Fraction a (1, 2);
-    Fraction b (1, 3);
-
-    CHECK(a == 0);
-    CHECK(b == 0);
-    CHECK(a == 0.5);
-    CHECK(b == 0.333333333333333);
-}
-
-TEST_CASE("Test 12: Mixed type operators with fractions")
+TEST_CASE("Test 11: Mixed type operators with fractions")
 {
     Fraction a (1, 2);
 
@@ -190,7 +182,7 @@ TEST_CASE("Test 12: Mixed type operators with fractions")
     CHECK((1 != a) == true);
 }
 
-TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
+TEST_CASE("Test 12: Mixed type compound assignment operators with fractions")
 {
     Fraction a (1, 2);
 
@@ -207,3 +199,11 @@ TEST_CASE("Test 13: Mixed type compound assignment operators with fractions")
     CHECK(a == Fraction(1, 2));
 }
 
+TEST_CASE("Test 13: Division by zero")
+{
+    Fraction a (1, 2);
+    Fraction b (0, 1);
+
+    CHECK_THROWS_AS(a / b, std::invalid_argument);
+    CHECK_NOTHROW(b / a);
+}

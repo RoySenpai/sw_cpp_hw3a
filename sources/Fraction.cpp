@@ -21,15 +21,9 @@ using namespace std;
 
 namespace ariel
 {
-    void Fraction::__reduce() {
-        int gcd = __gcd(_numerator, _denominator);
-        _numerator /= gcd;
-        _denominator /= gcd;
-    }
-
     Fraction::Fraction(): _numerator(0), _denominator(1) {}
 
-    Fraction::Fraction(double number) {
+    Fraction::Fraction(float number) {
         int power = 1;
         while (number != (int)number && power < 1000)
         {
@@ -107,9 +101,7 @@ namespace ariel
         int numerator = (_numerator * other._denominator) + (other._numerator * _denominator);
         int denominator = (_denominator * other._denominator);
 
-        int gcd = __gcd(numerator, denominator);
-        numerator /= gcd;
-        denominator /= gcd;
+        __reduce(numerator, denominator);
 
         return Fraction(numerator, denominator);
     }
@@ -118,9 +110,7 @@ namespace ariel
         int numerator = (_numerator * other._denominator) - (other._numerator * _denominator);
         int denominator = (_denominator * other._denominator);
 
-        int gcd = __gcd(numerator, denominator);
-        numerator /= gcd;
-        denominator /= gcd;
+        __reduce(numerator, denominator);
 
         return Fraction(numerator, denominator);
     }
@@ -129,20 +119,19 @@ namespace ariel
         int numerator = (_numerator * other._numerator);
         int denominator = (_denominator * other._denominator);
 
-        int gcd = __gcd(numerator, denominator);
-        numerator /= gcd;
-        denominator /= gcd;
+        __reduce(numerator, denominator);
 
         return Fraction(numerator, denominator);
     }
 
     const Fraction Fraction::operator/(const Fraction& other) const {
+        if (other._numerator == 0)
+            throw invalid_argument("Can't divide by zero");
+
         int numerator = (_numerator * other._denominator);
         int denominator = (_denominator * other._numerator);
 
-        int gcd = __gcd(numerator, denominator);
-        numerator /= gcd;
-        denominator /= gcd;
+        __reduce(numerator, denominator);
 
         return Fraction(numerator, denominator);
     }
@@ -183,6 +172,9 @@ namespace ariel
     }
 
     Fraction& operator/=(Fraction& fraction, const Fraction& other) {
+        if (other._numerator == 0)
+            throw invalid_argument("Can't divide by zero");
+
         fraction._numerator *= other._denominator;
         fraction._denominator *= other._numerator;
 
@@ -244,41 +236,47 @@ namespace ariel
     }
 
 
-    // Operators with doubles
+    // Operators with floats
 
-    const Fraction Fraction::operator+(const double& number) const {
+    const Fraction Fraction::operator+(const float& number) const {
         return *this + Fraction(number);
     }
     
-    const Fraction operator+(const double& num, const Fraction& other) {
+    const Fraction operator+(const float& num, const Fraction& other) {
         return Fraction(num) + other;
     }
 
-    const Fraction Fraction::operator-(const double& number) const {
+    const Fraction Fraction::operator-(const float& number) const {
         return *this - Fraction(number);
     }
 
-    const Fraction operator-(const double& num, const Fraction& other) {
+    const Fraction operator-(const float& num, const Fraction& other) {
         return Fraction(num) - other;
     }
 
-    const Fraction Fraction::operator*(const double& number) const {
+    const Fraction Fraction::operator*(const float& number) const {
         return *this * Fraction(number);
     }
 
-    const Fraction operator*(const double& num, const Fraction& other) {
+    const Fraction operator*(const float& num, const Fraction& other) {
         return Fraction(num) * other;
     }
 
-    const Fraction Fraction::operator/(const double& number) const {
+    const Fraction Fraction::operator/(const float& number) const {
+        if (number == 0)
+            throw invalid_argument("Can't divide by zero");
+
         return *this / Fraction(number);
     }
 
-    const Fraction operator/(const double& num, const Fraction& other) {
+    const Fraction operator/(const float& num, const Fraction& other) {
+        if (other._numerator == 0)
+            throw invalid_argument("Can't divide by zero");
+
         return Fraction(num) / other;
     }
 
-    Fraction& operator+=(Fraction& fraction, const double& number) {
+    Fraction& operator+=(Fraction& fraction, const float& number) {
         Fraction temp = fraction + Fraction(number);
         
         fraction._numerator = temp._numerator;
@@ -289,7 +287,7 @@ namespace ariel
         return fraction;
     }
 
-    Fraction& operator-=(Fraction& fraction, const double& number) {
+    Fraction& operator-=(Fraction& fraction, const float& number) {
         Fraction temp = fraction - Fraction(number);
         
         fraction._numerator = temp._numerator;
@@ -300,7 +298,7 @@ namespace ariel
         return fraction;
     }
 
-    Fraction& operator*=(Fraction& fraction, const double& number) {
+    Fraction& operator*=(Fraction& fraction, const float& number) {
         Fraction temp = fraction * Fraction(number);
         
         fraction._numerator = temp._numerator;
@@ -311,7 +309,10 @@ namespace ariel
         return fraction;
     }
 
-    Fraction& operator/=(Fraction& fraction, const double& number) {
+    Fraction& operator/=(Fraction& fraction, const float& number) {
+        if (number == 0)
+            throw invalid_argument("Can't divide by zero");
+            
         Fraction temp = fraction / Fraction(number);
         
         fraction._numerator = temp._numerator;
@@ -322,62 +323,51 @@ namespace ariel
         return fraction;
     }
 
-    bool Fraction::operator==(const double& number) const {
+    bool Fraction::operator==(const float& number) const {
         return *this == Fraction(number);
     }
 
-    bool operator==(const double& num, const Fraction& other) {
+    bool operator==(const float& num, const Fraction& other) {
         return Fraction(num) == other;
     }
 
-    bool Fraction::operator!=(const double& number) const {
+    bool Fraction::operator!=(const float& number) const {
         return !(*this == Fraction(number));
     }
 
-    bool operator!=(const double& num, const Fraction& other) {
+    bool operator!=(const float& num, const Fraction& other) {
         return !(Fraction(num) == other);
     }
 
-    bool Fraction::operator<(const double& number) const {
+    bool Fraction::operator<(const float& number) const {
         return *this < Fraction(number);
     }
 
-    bool operator<(const double& num, const Fraction& other) {
+    bool operator<(const float& num, const Fraction& other) {
         return Fraction(num) < other;
     }
 
-    bool Fraction::operator>(const double& number) const {
+    bool Fraction::operator>(const float& number) const {
         return *this > Fraction(number);
     }
 
-    bool operator>(const double& num, const Fraction& other) {
+    bool operator>(const float& num, const Fraction& other) {
         return Fraction(num) > other;
     }
 
-    bool Fraction::operator<=(const double& number) const {
+    bool Fraction::operator<=(const float& number) const {
         return !(*this > Fraction(number));
     }
 
-    bool operator<=(const double& num, const Fraction& other) {
+    bool operator<=(const float& num, const Fraction& other) {
         return !(Fraction(num) > other);
     }
 
-    bool Fraction::operator>=(const double& number) const {
+    bool Fraction::operator>=(const float& number) const {
         return !(*this < Fraction(number));
     }
 
-    bool operator>=(const double& num, const Fraction& other) {
+    bool operator>=(const float& num, const Fraction& other) {
         return !(Fraction(num) < other);
-    }
-
-
-    // Casting operators
-
-    Fraction::operator double() const {
-        return static_cast<double>(_numerator) / static_cast<double>(_denominator);
-    }
-
-    Fraction::operator std::string() const {
-        return to_string(_numerator) + "/" + to_string(_denominator);
     }
 }
